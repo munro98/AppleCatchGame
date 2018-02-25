@@ -7,13 +7,15 @@ class Apple {
 		this.width = 16;
 		this.height = 16;
 		this.lifeTime = 0;
-		this.rotation = 0;
+		this.rotation =  Math.random() * 360;
 
-		this.texture = "res/bullet.png";
+		this.texture = "res/apple.png";
 		this.remove = false;
 	}
 
 	update(level, deltaTime) {
+
+		this.rotation += deltaTime * 100;
 
 		if (level.hit(this.pos)) {
 			level.removeWall(this.pos);
@@ -40,15 +42,11 @@ class Apple {
 		if (vec3.x < 0 || vec3.y < 0)
 			return;
 
-		this.rotation = Math.atan(this.vel.y / this.vel.x) * 180 / Math.PI;
-		if (this.vel.x >= 0.0) {
-			this.rotation += 180;
-		}
 
 		ctx.save();
 		ctx.translate(vec3.x, vec3.y);
-		ctx.rotate((this.rotation - 180) * Math.PI / 180);
-		ctx.drawImage(texture.getTexture(this.texture), -8, -8);
+		ctx.rotate(this.rotation * Math.PI / 180);
+		ctx.drawImage(texture.getTexture(this.texture), -32, -32, 64, 64);
 		ctx.restore();
 	}
 }

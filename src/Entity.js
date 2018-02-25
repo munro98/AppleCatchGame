@@ -22,13 +22,13 @@ class Entity {
 		var nextXposition = this.pos.x + this.vel.x * deltaTime;
 		var hitX = false;
 
-		/*
+		///*
 		for (let x = 0; x <= this.width; x += 32) {
 			for (let y = 0; y <= this.width; y += 32) {
 				hitX |= level.hit(new Vec2(nextXposition + x, this.pos.y + y));
 			}
 		}
-		*/
+		//*/
 
 		this.vel.y += 1000 * deltaTime;
 

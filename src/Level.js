@@ -24,6 +24,9 @@ class Level {
 			}
 		}
 
+		this.texture = "res/background.jpeg";
+		this.blocks = "res/blocks.png";
+
 		this.drawsFrame = 0;
 
 		this.first = false;
@@ -67,6 +70,13 @@ class Level {
 	}
 
 	draw(view, width, height) {
+
+
+		ctx.drawImage(texture.getTexture(this.texture), 0, 0, 640, 640);
+
+		ctx.drawImage(texture.getTexture(this.blocks), 0, 0, 640, 640);
+
+
 		var vec = view;
 		vec.x = Math.round(vec.x);
 		vec.y = Math.round(vec.y);
@@ -126,7 +136,6 @@ class Level {
 		if (tileIndex < 0 || tileIndex >= this.width * this.width)
 			return;
 
-		console.log(x + " " + y);
 		this.tiles[tileIndex] = 0;
 	}
 

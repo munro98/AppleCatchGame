@@ -21,6 +21,13 @@ let level = new Level();
 
 let appleSpawnTimer = 0.0;
 
+let score = 0.0;
+let timeAlive = 0.0;
+
+let spawnRate = 1.8;
+
+let spawnRateTimer = 0.0;
+
 //Game loop
 function main(currentTimeMilli) {
     window.requestAnimationFrame(main);
@@ -39,9 +46,21 @@ function main(currentTimeMilli) {
     //console.log(currentTime);
     //console.log(deltaTime);
 
+    spawnRateTimer += deltaTime;
+
+    
+    if (spawnRateTimer > 2.0 && spawnRate > 0.1) {
+        spawnRateTimer = 0.0;
+        spawnRate -= 0.1;
+        
+        console.log(spawnRate)
+    }
+
+
+
     appleSpawnTimer += deltaTime;
 
-    if (appleSpawnTimer > 0.6) {
+    if (appleSpawnTimer > spawnRate) {
         appleSpawnTimer = 0.0;
         let x = Math.random() * 600;
         let newApple = new Apple(new Vec2(x, 0))
@@ -56,6 +75,14 @@ function main(currentTimeMilli) {
     player.update(level, deltaTime);
 
     
+    for (var i = 0; i < apples.length; i++) {
+        if (player.isPointIntersecting(apples[i])) {
+            apples[i].remove = true;
+            score += 10;
+            //
+        }
+        //apples[i].update(level, deltaTime);
+    }
 
 
     //Remove dead apples

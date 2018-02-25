@@ -12,6 +12,7 @@ class Player extends Entity {
 		this.timeSinceLastFire = 0;
 
 		this.texture = "res/player.png";
+		
 
 		this.downKeys = new Set();
 		this.downKeysFrame = new Set();
@@ -189,26 +190,10 @@ class Player extends Entity {
 		}
 
 		if (this.onGround) {
-			this.vel.x *= 110.0 * deltaTime;
+			this.vel.x *= 114.0 * deltaTime;
 		} else {
-			//this.vel.x *= 120.0 * deltaTime;
+			this.vel.x *= 118.0 * deltaTime;
 		}
-
-		/*
-		var deceleration = this.decel * deltaTime;
-		if (inputVec3.mag() == 0) {
-			if (this.vel.x > 0) {
-				this.vel.x = Math.max(this.vel.x - deceleration, 0);
-			} else {
-				this.vel.x = Math.min(this.vel.x + deceleration, 0);
-			}
-			if (this.vel.y > 0) {
-				this.vel.y = Math.max(this.vel.y - deceleration, 0);
-			} else {
-				this.vel.y = Math.min(this.vel.y + deceleration, 0);
-			}
-		}
-		*/
 		
 		this.lastDownKeys = new Set(this.downKeys);
 
