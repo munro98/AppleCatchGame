@@ -1,11 +1,5 @@
 "use strict";
 
-if (typeof exports !== "undefined") {
-	global.Vec2 = require('./Vec2.js').Vec2;
-	//global.Actor = require('./Actor.js').Actor;
-
-}
-
 class Entity {
 	constructor(size, pos) {
 		this.pos = pos;
@@ -84,42 +78,6 @@ class Entity {
 		return true;
 	}
 
-	resolveCollision(other) {
-		// Calculate relative velocity
-		var rv = new Vec2(other.vel.x, other.vel.y);
-		rv = rv.sub(new Vec2(this.vel.x, this.vel.y));
-
-		// Calculate relative velocity in terms of the normal direction
-		var normal = new Vec2(other.pos.x, other.pos.y);
-		normal = normal.sub(new Vec2(this.pos.x, this.pos.y));
-		normal = normal.normalized();
-		var velAlongNormal = rv.dot(normal);
-
-		// Do not resolve if velocities are separating
-		if (velAlongNormal > 0)
-			return;
-
-		// Calculate restitution
-		//var e = Math.min( A.restitution, B.restitution)
-		var e = 0.2;
-
-		// Calculate impulse scalar
-		var j = -(1 + e) * velAlongNormal;
-		j /= 1 / this.mass + 1 / other.mass;
-
-		// Apply impulse
-		var impulse = normal.mul(j); //j * normal
-
-		var vA = new Vec2(1 / this.mass * impulse.x, 1 / this.mass * impulse.y);
-		var vB = new Vec2(1 / other.mass * impulse.x, 1 / other.mass * impulse.y);
-
-		this.vel.x -= vA.x;
-		this.vel.y -= vA.y;
-
-		other.vel.x += vB.x;
-		other.vel.y += vB.y;
-	}
-
 	draw(view) {
 		var vec = view.add(this.pos);
 		vec.x = Math.floor(vec.x);
@@ -139,6 +97,3 @@ class Entity {
 	}
 
 }
-
-if (typeof exports !== "undefined")
-	exports.Entity = Entity;

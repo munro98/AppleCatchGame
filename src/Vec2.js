@@ -70,7 +70,3 @@ class Vec2 {
 		this.y /= mag;
 	}
 }
-
-// if running inside node
-if (typeof exports !== "undefined")
-	exports.Vec2 = Vec2;

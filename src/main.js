@@ -8,6 +8,11 @@ let previousTime = 0.0;
 let px = 10,
     py = 20;
 
+let texture = new Texture();
+
+let player = new Player(new Vec2(40, 40));
+let apples = new Array();
+
 //Game loop
 function main(currentTimeMilli) {
     window.requestAnimationFrame(main);
@@ -29,6 +34,8 @@ function main(currentTimeMilli) {
     //Render
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
+
+    player.draw(new Vec2(0,0) );
 
     ctx.fillRect(px, py, 40, 40);
 
