@@ -190,6 +190,8 @@ class Player extends Entity {
 
 		if (this.onGround) {
 			this.vel.x *= 110.0 * deltaTime;
+		} else {
+			//this.vel.x *= 120.0 * deltaTime;
 		}
 
 		/*
