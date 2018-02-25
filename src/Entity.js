@@ -13,41 +13,48 @@ class Entity {
 
 		this.mass = 10;
 		this.remove = false;
+		this.onGround = false;
 	}
 
-	// TODO reorder
-	update(deltaTime, level) {
+	update(level, deltaTime) {
 
-		///*
+
 		var nextXposition = this.pos.x + this.vel.x * deltaTime;
 		var hitX = false;
 
+		/*
 		for (let x = 0; x <= this.width; x += 32) {
 			for (let y = 0; y <= this.width; y += 32) {
 				hitX |= level.hit(new Vec2(nextXposition + x, this.pos.y + y));
 			}
 		}
+		*/
+
+		this.vel.y += 1000 * deltaTime;
 
 		if (!hitX) {
 			this.pos.x += this.vel.x * deltaTime;
 		} else {
 			this.vel.x = 0;
 		}
-
+		
 		var nextYposition = this.pos.y + this.vel.y * deltaTime;
 		var hitY = false;
 
+		///*
 		for (let x = 0; x <= this.width; x += 32) {
 			for (let y = 0; y <= this.width; y += 32) {
 				hitY |= level.hit(new Vec2(this.pos.x + x, nextYposition + y));
 			}
 		}
+		//*/
 		if (!hitY) {
 			this.pos.y += this.vel.y * deltaTime;
+			this.onGround = false;
 		} else {
 			this.vel.y = 0;
+			this.onGround = true;
 		}
-		//*/
 
 		this.lifeTime += deltaTime;
 

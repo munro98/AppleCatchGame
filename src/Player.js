@@ -26,7 +26,7 @@ class Player extends Entity {
 		this.mouse = new Vec2(0, 0);
 	}
 
-	updateClient(deltaTime, level) {
+	updateClient(level, deltaTime) {
 		var vec3 = cameraPosition.add(this.getCenter());
 		var relvec3 = new Vec2(mouseX, mouseY).sub(vec3);
 
@@ -41,18 +41,9 @@ class Player extends Entity {
 
 	updateServer(deltaTime, level, serverNet) {
 
-		this.downKeysFrame = new Set();
+		
 
-		for (var key of this.downKeys) {
-			if (!this.lastDownKeys.has(key)) {
-				this.downKeysFrame.add(key);
-			}
-
-		}
-
-		if (this.downKeysFrame.has(87)) {
-			//console.log("Frame");
-		}
+		
 
 		let deltaPos2 = this.targetPos.sub(this.pos).normalized().mul(deltaTime * this.maxPosCorrection);
 
@@ -82,11 +73,11 @@ class Player extends Entity {
 		}
 
 		var inputVec3 = new Vec2(0, 0);
-		if (this.downKeys.has(87)) {
+		if (this.downKeysFrame.has(87)) {
 			this.moved = true;
 			inputVec3.y += -1;
 		}
-		if (this.downKeys.has(83)) {
+		if (this.downKeysFrame.has(83)) {
 			this.moved = true;
 			inputVec3.y += 1;
 		}
@@ -149,23 +140,35 @@ class Player extends Entity {
 		}
 
 
-		this.lastDownKeys = new Set(this.downKeys);
+		
 
 		super.update(deltaTime, level);
 	}
 
-	update(deltaTime, level) {
+	update(level, deltaTime) {
 
 		this.lifeTime += deltaTime;
 
-		var inputVec3 = new Vec2(0, 0);
-		if (this.downKeys.has(87)) {
-			this.moved = true;
-			inputVec3.y += -1;
+		this.downKeysFrame = new Set();
+		for (var key of this.downKeys) {
+			if (!this.lastDownKeys.has(key)) {
+				this.downKeysFrame.add(key);
+			}
 		}
-		if (this.downKeys.has(83)) {
+
+		if (this.downKeysFrame.has(87)) {
+			console.log("Frame");
+		}
+
+		var inputVec3 = new Vec2(0, 0);
+		if (this.downKeysFrame.has(87) && this.onGround) {
 			this.moved = true;
-			inputVec3.y += 1;
+			//inputVec3.y += -1;
+			this.vel.y = -600;
+		}
+		if (this.downKeysFrame.has(83)) {
+			this.moved = true;
+			//inputVec3.y += 1;
 		}
 
 		if (this.downKeys.has(65)) {
@@ -182,8 +185,14 @@ class Player extends Entity {
 		this.vel = this.vel.add(deltaPos);
 
 		if (this.vel.mag() > this.maxVel) {
-			this.vel = this.vel.normalized().mul(this.maxVel);
+			//this.vel = this.vel.normalized().mul(this.maxVel);
 		}
+
+		if (this.onGround) {
+			this.vel.x *= 110.0 * deltaTime;
+		}
+
+		/*
 		var deceleration = this.decel * deltaTime;
 		if (inputVec3.mag() == 0) {
 			if (this.vel.x > 0) {
@@ -197,9 +206,11 @@ class Player extends Entity {
 				this.vel.y = Math.min(this.vel.y + deceleration, 0);
 			}
 		}
+		*/
 		
+		this.lastDownKeys = new Set(this.downKeys);
 
-		super.update(deltaTime, level);
+		super.update(level, deltaTime);
 	}
 
 }
